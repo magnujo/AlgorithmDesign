@@ -3,25 +3,28 @@ from collections import deque
 import numpy as np
 
 
-
-
+class Vertex:
+    def __init__(self, name):
+        self.name = name
 
 
 
 vertices = {}
-edges = []
+edges = np.array([])
 edge_indices = {}
 #edges.append([None])
 
 
 #print(np.array(edges))
-edges.append([None])
+edges = np.append(edges, None)
+print(edges)
+
 m = int(input())
 
 for j in range(m):
     s = str(input())
     edges[0].append(s)
-    vertices[s] = int(j+1)
+    vertices[s] = j+1
 
 #print(edges)
 
@@ -39,7 +42,7 @@ for i in range(1, m+1):
 
 
 
-print(np.array(edges))
+print(np.matrix(edges))
 print(vertices)
 
 n = int(input())
@@ -51,24 +54,7 @@ for i in range(n):
    col = vertices.get(v_in)
    edges[row][col] = c
 
-def printMatrix(matrix, spacingfactor=6):
-    for i in range(len(matrix)):
-        print('')
-        for j in range(len(matrix[i])):
-            if matrix[i][j] == None:
-                sp = spacingfactor-4
-                e1 = ' '*sp
-                print(matrix[i][j], end=e1)
-            else:
-                l = len(str(matrix[i][j]))
-                e = ' '*spacingfactor
-                end = e[:-l]
-                print(matrix[i][j], end=end)
-
-
-
-print(np.array(edges))
-printMatrix(edges, 7)
+print(np.matrix(edges))
 
 
 
