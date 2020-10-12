@@ -1,16 +1,30 @@
-import hashlib
 
-max = 2000
-aim = 1000
-numberOfPlates = 0
-# lav en matrix med mulige kombinationer af vægte
+ROW = 6
+parent = [-1] * (ROW)
+queue = []
+queue.append(1)
+print(queue)
+queue.append(2)
+print(queue)
+queue.pop(0)
+print(queue)
+print(parent)
+#parent = [-1, 0,0, 1, 2, 3]
+#visited = [t, t, t, t, t, t]
+#quee = 5
+u = 4
+
+s = 0
+graph[0][1]
+path_flow = 12
 
 
+v = 3
+u = 3
 
-
-str = "hehah"
-result = hashlib.sha256(str.encode())
-
-
-print(result)
-
+graph = [[0, 16, 13, 0, 0, 0],
+         [0, 0, 10, 12, 0, 0],
+         [0, 4, 0, 0, 14, 0],
+         [0, 0, 9, 0, 0, 8],
+         [0, 0, 0, 7, 0, 4],
+         [0, 0, 0, 12, 0, 0]]

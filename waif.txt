@@ -4,3 +4,13 @@
 1 3
 1 3
 2 1 2 1
+
+currentnodeindex =
+
+currentnode = t3
+stack: b1 b2
+localstack:
+visited: s b3 t3
+pathlist: s b3 t3
+nopathfound = f
+i = 1
