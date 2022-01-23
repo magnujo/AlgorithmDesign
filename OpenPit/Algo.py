@@ -15,90 +15,62 @@ def printMatrix(matrix, spacingfactor=3):
                 e = ' '*spacingfactor
                 end = e[:-l]
                 print(matrix[i][j], end=end)
-                print()
+    print()
+
 
 indexes = {}
 index = 1
 
-numofchildren, numoftoys, numofcat = input().split()
-numofchildren = int(numofchildren)
-numoftoys = int(numoftoys)
-numofcat = int(numofcat)
+numofblocks = int(input())
+
 residualmatrix = []
 indexes['s'] = index
 index = index + 1
-matrixSize = numofchildren + numoftoys + numofcat + 3
-
+matrixSize = numofblocks + 3
 
 matrix = [[0 for i in range(matrixSize)] for j in range(matrixSize)]
 
+
+#
 parseindex = 2
 matrix[0][1] = 's'
 matrix[1][0] = 's'
 
 
-for i in range(numofchildren):
+
+for i in range(numofblocks):
     num = 'b' + str(i+1)
     matrix[0][parseindex] = num
     matrix[parseindex][0] = num
-    matrix[1][parseindex] = 1
+    #matrix[1][parseindex] = 1
     indexes[num] = index
     index = index + 1
     parseindex += 1
 
+t_index = numofblocks+2
 
-for i in range(numoftoys):
-    num = 't' + str(i+1)
-    matrix[0][parseindex] = num
-    matrix[parseindex][0] = num
-    indexes[num] = index
-    index = index + 1
-    parseindex += 1
+matrix[t_index][0] = "t"
+matrix[0][t_index] = "t"
+sum_pos = 0
 
+for i in range(numofblocks):
+    b = list(map(int, input().split()))
+    profit = b[0] - b[1]
+    obsnum = b[2]
+    b_obs = b[-obsnum:]
+    if profit > 0:
+        matrix[1][i+2] = profit
+        sum_pos = sum_pos + profit
+    else:
+        matrix[i+2][t_index] = abs(profit)
 
-for i in range(numofcat):
-    num = 'c' + str(i+1)
-    matrix[0][parseindex] = num
-    matrix[parseindex][0] = num
-    indexes[num] = index
-    index = index + 1
-    parseindex += 1
+    if obsnum > 0:
+        for obs in b_obs:
+            matrix[obs+1][i+2] = float('inf')
 
-matrix[0][parseindex] = 't'
-matrix[parseindex][0] = 't'
+#print("sumpos", sum_pos)
 indexes['t'] = index
-index = index + 1
 
-parseindex = 2
-
-sinkidx = indexes['t']
-
-for i in range(numofchildren):
-    k = input().split()
-    r = int(k[0])
-    for j in range(r):
-        toynum = k[j+1]
-        toyidx = indexes['t'+toynum]
-        matrix[i+2][toyidx] = 1
-
-for i in range(numoftoys):
-    toyidx = indexes['t' + str(i+1)]
-    matrix[toyidx][sinkidx] = 1
-
-for i in range(numofcat):
-    k = input().split()
-    catindex = indexes['c' + str(i+1)]
-    r = int(k[0])
-    c = int(k.pop())
-    for j in range(r):
-        toynum = k[j+1]
-        toyidx = indexes['t'+toynum]
-        matrix[toyidx][catindex] = 1
-        matrix[toyidx][sinkidx] = 0
-    matrix[catindex][sinkidx] = c
-
-
-bottleneck = 1
 def dfs(source, sink):
     pathlist = []
     stack = deque([])
@@ -127,15 +99,26 @@ def dfs(source, sink):
 
     return pathlist, t_reached, parentMap
 
+
+
+bottleneck = float('inf')
+
 maxflow = 0
 treached = True
-
 
 while True:
     path = []
     pathlist, treached, parentMap = dfs('s', 't')
     if not treached:
         break
+    for i in range(1, len(pathlist)):
+        node = indexes[pathlist[i]]
+        parent = indexes[parentMap[pathlist[i]]]
+        cur_cap = matrix[parent][node]
+        if cur_cap < bottleneck:
+            bottleneck = cur_cap
+    #print(pathlist)
+    #print(bottleneck)
     maxflow += bottleneck
     v = 't'
     while v != 's':
@@ -148,5 +131,6 @@ while True:
         v = parentMap[v]
 
     path.append(v)
+#
+print(sum_pos-maxflow)
 
-print(maxflow)
